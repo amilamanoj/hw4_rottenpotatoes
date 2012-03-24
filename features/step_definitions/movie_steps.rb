@@ -7,3 +7,8 @@ Given /the following movies exist/ do |movies_table|
   end
   assert true, "Success"
 end
+
+Then /the director of "(.*)" should be "(.*)"/ do |e1, e2|
+  direc=Movie.find_by_title(e1).director
+  assert_equal(direc, e2, "Did not match movie with director")  
+end  
