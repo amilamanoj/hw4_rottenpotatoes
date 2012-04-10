@@ -57,5 +57,36 @@ class MoviesController < ApplicationController
     flash[:notice] = "Movie '#{@movie.title}' deleted."
     redirect_to movies_path
   end
+  
+  def same_director
+    #    puts "same director method in controller"
+    id = params[:id]
+    #    puts id
+    #    puts "================================"
+    tdir=nil
+    session[:aa] = nil
+    #puts "movie is #{tmovie.title}"
+  
+    @movies = Movie.same_director_movies(id)
+    #    if !@movies.nil? 
+    #      puts "movies:"
+    #      puts @movies.each { |item| puts item.title }
+    #    end
+    if @movies.nil?
+      tmovie = Movie.find_by_id(id)
+      if !tmovie.nil?
+        tdir = tmovie.director
+        if !tmovie.nil? && (tdir.nil? || tdir.empty?)
+          #puts "director unknown!"
+          flash[:notice] = "'#{tmovie.title}' has no director info"
+          session[:aa] = "'#{tmovie.title}' has no director info"
+          #      puts "movies is nil, redirecting to"
+          #      puts movies_path
+          #      @notfoundmovie = Movie.find_by_id(id).title
+        end
+      end
+      redirect_to movies_path
+    end
+  end
 
 end
